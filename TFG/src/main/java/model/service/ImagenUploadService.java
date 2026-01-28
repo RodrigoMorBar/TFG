@@ -11,7 +11,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
 
-@Service
+//@Service
 public class ImagenUploadService {
 	
 	

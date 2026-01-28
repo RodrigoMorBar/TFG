@@ -64,4 +64,28 @@ public class Users implements UserDetails, Serializable {
 		// Spring espera "ROLE_ADMIN", "ROLE_USER", etc.
 		return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
 	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
+	}
 }

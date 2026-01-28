@@ -1,5 +1,16 @@
 package model.service;
 
-public interface FollowsService {
+import java.util.List;
+import model.entities.Follows;
 
+public interface FollowsService {
+    List<Follows> findAll();
+    Follows findById(Integer Id);
+    int insert(Follows follow);
+    int update(Follows follow);
+    int delete(Integer id);
+    
+    List<Follows> findFollowersByUsername(String username);
+    List<Follows> findFollowingByUsername(String username);
+	
 }

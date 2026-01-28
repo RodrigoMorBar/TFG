@@ -1,5 +1,6 @@
 package model.restcontroller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import model.dto.RegisterDTO;
+import model.dto.UserResponseDTO;
 import model.entities.Users;
 //import model.service.ImagenUploadService;
 import model.service.UsersService;
@@ -61,20 +64,26 @@ public class UsersRestController {
 	}*/
 	
 	@GetMapping("/todos")
-	public List<Users> findAll(){
-		return userService.findAll();
+	public List<UserResponseDTO> findAll(){
+		List<Users> users = userService.findAll();
+		List<UserResponseDTO> response = new ArrayList<>();
+		for(Users user : users) {
+		    response.add(new UserResponseDTO(user));
+		    }
+		return response;
 	}
 	@GetMapping("/login/{username}/{password}")
 	public Users findbyUsernameAndPassword(@PathVariable String username, @PathVariable String password) {
 		return userService.findByUserNamePassword(username, password);
 	}
 	@GetMapping("/username/{username}")
-	public Users findByUsername(@PathVariable String username) {
-		return userService.findByUserName(username);
+	public UserResponseDTO findByUsername(@PathVariable String username) {
+	    Users user = userService.findByUserName(username);
+	    return new UserResponseDTO(user);
 	}
 	@PostMapping("/register")
-	public int register(@RequestBody Users usuario) {
-		return userService.insert(usuario);
+	public int register(@RequestBody RegisterDTO usuario) {
+		return userService.insert(usuario.toEntity());
 	}
 	@DeleteMapping("/delete/{username}")
 	public int delete (@PathVariable String username) {

@@ -2,6 +2,7 @@ package security;
 
 import java.util.List;
 
+import org.apache.catalina.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -19,6 +20,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import model.entities.Users;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -34,8 +37,12 @@ public class SecurityConfig {
 	          .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 	          .cors(Customizer.withDefaults())
 	          .authorizeHttpRequests(auth -> auth
-	              .requestMatchers("/user/username/*/foto").authenticated()
-	              .requestMatchers("/api/usuarios/**").authenticated()
+	              .requestMatchers("/user/register").permitAll()
+	              .requestMatchers("/user/login/**").permitAll()
+	              .requestMatchers("/user/todos").permitAll()
+	              .requestMatchers("/user/username/**").authenticated()
+	              .requestMatchers("/user/update").authenticated()
+	              .requestMatchers("/user/delete/**").authenticated()
 	              .anyRequest().authenticated()
 	          )
 	          .httpBasic(Customizer.withDefaults())
@@ -45,10 +52,13 @@ public class SecurityConfig {
 	  
 	  @Bean
 	  AuthenticationProvider authenticationProvider(UserDetailsService uds, PasswordEncoder encoder) {
-	      DaoAuthenticationProvider provider = new DaoAuthenticationProvider(uds);
+	      DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+	      provider.setUserDetailsService(uds);
 	      provider.setPasswordEncoder(encoder);
 	      return provider;
 	  }
+	 
+	  
 	  
 	  @SuppressWarnings("deprecation")
 	  @Bean
