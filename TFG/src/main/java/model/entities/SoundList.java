@@ -21,7 +21,7 @@ public class SoundList implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name="id_sounds_lists")
+    @Column(name="id_sound_lists")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 

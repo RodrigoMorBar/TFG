@@ -32,26 +32,24 @@ public class SecurityConfig {
 	  @Bean
 	  SecurityFilterChain securityFilterChain(HttpSecurity http,
 	                                          AuthenticationProvider authProvider) throws Exception {
-	      http
-	          .csrf(csrf -> csrf.disable())
-	          .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-	          .cors(Customizer.withDefaults())
-	          .authorizeHttpRequests(auth -> auth
-	        		    .requestMatchers("/user/register").permitAll()
-	        		    .requestMatchers("/user/login/**").permitAll()
-	        		    .requestMatchers("/follow/**").permitAll()  // Mueve esto arriba
-	        		    .requestMatchers("/soundlist/**").permitAll()
-	        		    .requestMatchers("/listalbum/**").permitAll()
-	        		    .requestMatchers("/user/todos").authenticated()
-	        		    .requestMatchers("/user/username/**").authenticated()
-	        		    .requestMatchers("/user/update").authenticated()
-	        		    .requestMatchers("/user/delete/**").authenticated()
-	        		    .anyRequest().authenticated()
-	        		)
-	          .httpBasic(Customizer.withDefaults())
-	          .authenticationProvider(authProvider);
-	      return http.build();
-	  }
+		  
+		      http
+		          .csrf(csrf -> csrf.disable())
+		          .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+		          .cors(Customizer.withDefaults())
+		          .authorizeHttpRequests(auth -> auth
+		        		    .requestMatchers("/user/register").permitAll()
+		        		    .requestMatchers("/user/login/**").permitAll()
+		        		    .requestMatchers("/follow/**").permitAll()
+		        		    .requestMatchers("/soundlist/**").permitAll()
+		        		    .requestMatchers("/listalbum/**").permitAll()
+		        		    .anyRequest().permitAll()  // TODO público temporalmente
+		        		)
+		          .httpBasic(Customizer.withDefaults())
+		          .authenticationProvider(authProvider);
+		      return http.build();
+		  }
+	          
 	  
 	  @Bean
 	  AuthenticationProvider authenticationProvider(UserDetailsService uds, PasswordEncoder encoder) {
