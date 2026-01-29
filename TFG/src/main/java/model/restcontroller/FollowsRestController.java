@@ -1,5 +1,6 @@
 package model.restcontroller;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import model.dto.FollowResponseDTO;
 import model.entities.Follows;
 import model.service.FollowsService;
 
@@ -23,13 +25,19 @@ public class FollowsRestController {
 	private FollowsService followService;
 	
 	@GetMapping("/todos")
-	public List<Follows> findAll(){
-		return followService.findAll();
+	public List<FollowResponseDTO> findAll(){
+		List<Follows> follows = followService.findAll();
+		List<FollowResponseDTO> response = new ArrayList<>();
+		for (Follows follow : follows) {
+			response.add(new FollowResponseDTO(follow));
+		}
+		return response;
 	}
 	
 	@GetMapping("/{id}")
-	public Follows findById(@PathVariable Integer id) {
-		return followService.findById(id);
+	public String findById(@PathVariable Integer id) {
+	    Follows follow = followService.findById(id);
+	    return "Follower: " + follow.getFollower().getUsername() + ", Followed: " + follow.getFollowed().getUsername();
 	}
 	
 	@PostMapping("/insert")
@@ -47,15 +55,23 @@ public class FollowsRestController {
 		return followService.delete(id);
 	}
 	
-	// Ver seguidores de un usuario (quién lo sigue)
 	@GetMapping("/followers/{username}")
-	public List<Follows> getFollowers(@PathVariable String username) {
-		return followService.findFollowersByUsername(username);
+	public List<FollowResponseDTO> getFollowers(@PathVariable String username) {
+		List<Follows> follows = followService.findFollowersByUsername(username);
+		List<FollowResponseDTO> response = new ArrayList<>();
+		for(Follows follow : follows) {
+			response.add(new FollowResponseDTO(follow));
+		}
+		return response;
 	}
 	
-	// Ver a quién sigue un usuario
 	@GetMapping("/following/{username}")
-	public List<Follows> getFollowing(@PathVariable String username) {
-		return followService.findFollowingByUsername(username);
+	public List<FollowResponseDTO> getFollowing(@PathVariable String username) {
+		List<Follows> follows = followService.findFollowingByUsername(username);
+		List<FollowResponseDTO> response = new ArrayList<>();
+		for(Follows follow : follows) {
+			response.add(new FollowResponseDTO(follow));
+		}
+		return response;
 	}
 }
