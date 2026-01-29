@@ -37,15 +37,17 @@ public class SecurityConfig {
 	          .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 	          .cors(Customizer.withDefaults())
 	          .authorizeHttpRequests(auth -> auth
-	              .requestMatchers("/user/register").permitAll()
-	              .requestMatchers("/user/login/**").permitAll()
-	              .requestMatchers("/user/todos").authenticated()
-	              .requestMatchers("/follow/**").permitAll()
-	              .requestMatchers("/user/username/**").authenticated()
-	              .requestMatchers("/user/update").authenticated()
-	              .requestMatchers("/user/delete/**").authenticated()
-	              .anyRequest().authenticated()
-	          )
+	        		    .requestMatchers("/user/register").permitAll()
+	        		    .requestMatchers("/user/login/**").permitAll()
+	        		    .requestMatchers("/follow/**").permitAll()  // Mueve esto arriba
+	        		    .requestMatchers("/soundlist/**").permitAll()
+	        		    .requestMatchers("/listalbum/**").permitAll()
+	        		    .requestMatchers("/user/todos").authenticated()
+	        		    .requestMatchers("/user/username/**").authenticated()
+	        		    .requestMatchers("/user/update").authenticated()
+	        		    .requestMatchers("/user/delete/**").authenticated()
+	        		    .anyRequest().authenticated()
+	        		)
 	          .httpBasic(Customizer.withDefaults())
 	          .authenticationProvider(authProvider);
 	      return http.build();

@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,11 +32,13 @@ private static final long serialVersionUID = 1L;
 	
 	@ManyToOne
 	@JoinColumn(name = "follower_id")
+	@JsonIgnoreProperties({"password", "authorities", "enabled", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
 	private Users follower;
 	
 	
 	@ManyToOne
 	@JoinColumn(name= "followed_id")
+	@JsonIgnoreProperties({"password", "authorities", "enabled", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
 	private Users followed;
 	
 	@Column(name="created_at")
