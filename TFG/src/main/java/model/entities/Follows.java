@@ -40,5 +40,7 @@ private static final long serialVersionUID = 1L;
 	@Column(name="created_at")
 	private LocalDateTime createdAt;
 	//gfrgrgr
+	
+	
 
 }

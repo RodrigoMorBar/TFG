@@ -39,7 +39,8 @@ public class SecurityConfig {
 	          .authorizeHttpRequests(auth -> auth
 	              .requestMatchers("/user/register").permitAll()
 	              .requestMatchers("/user/login/**").permitAll()
-	              .requestMatchers("/user/todos").permitAll()
+	              .requestMatchers("/user/todos").authenticated()
+	              .requestMatchers("/follow/**").permitAll()
 	              .requestMatchers("/user/username/**").authenticated()
 	              .requestMatchers("/user/update").authenticated()
 	              .requestMatchers("/user/delete/**").authenticated()
