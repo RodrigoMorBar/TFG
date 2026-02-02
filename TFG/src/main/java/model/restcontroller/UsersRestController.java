@@ -5,8 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import model.dto.LoginRequest;
 import model.dto.RegisterDTO;
 import model.dto.UserResponseDTO;
 import model.entities.Users;
@@ -32,6 +38,12 @@ public class UsersRestController {
 	
 	@Autowired
 	private UsersService userService;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
 	
 	/*@Autowired
 	private ImagenUploadService imagenUploadService;
@@ -72,9 +84,27 @@ public class UsersRestController {
 		    }
 		return response;
 	}
-	@GetMapping("/login/{username}/{password}")
-	public Users findbyUsernameAndPassword(@PathVariable String username, @PathVariable String password) {
-		return userService.findByUserNamePassword(username, password);
+	@PostMapping("/login")
+	public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+	    try {
+	        // Autenticar con Spring Security
+	        Authentication authentication = authenticationManager.authenticate(
+	            new UsernamePasswordAuthenticationToken(
+	                loginRequest.getUsername(),
+	                loginRequest.getPassword()
+	            )
+	        );
+	        
+	        // Si llega aquí, las credenciales son correctas
+	        Users user = userService.findByUserName(loginRequest.getUsername());
+	        UserResponseDTO response = new UserResponseDTO(user);
+	        
+	        return ResponseEntity.ok(response);
+	        
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+	            .body("Usuario o contraseña incorrectos");
+	    }
 	}
 	@GetMapping("/username/{username}")
 	public UserResponseDTO findByUsername(@PathVariable String username) {
@@ -82,8 +112,10 @@ public class UsersRestController {
 	    return new UserResponseDTO(user);
 	}
 	@PostMapping("/register")
-	public int register(@RequestBody RegisterDTO usuario) {
-		return userService.insert(usuario.toEntity());
+	public int register(@RequestBody RegisterDTO dto) {
+	    Users user = dto.toEntity();
+	    user.setPassword(passwordEncoder.encode(user.getPassword()));
+	    return userService.insert(user);
 	}
 	@DeleteMapping("/delete/{username}")
 	public int delete (@PathVariable String username) {

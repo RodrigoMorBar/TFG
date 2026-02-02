@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import model.entities.Role;
 import model.entities.Users;
 
 @Data
@@ -23,6 +24,7 @@ public class RegisterDTO {
 	        user.setUsername(this.username);
 	        user.setPassword(this.password);
 	        user.setEmail(this.email);
+	        user.setRole(Role.USER);
 	        
 	        user.setCreeatedAt(LocalDateTime.now());
 	        return user;
