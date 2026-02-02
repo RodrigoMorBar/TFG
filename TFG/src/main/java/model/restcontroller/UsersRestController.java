@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import model.dto.LoginRequest;
 import model.dto.RegisterDTO;
 import model.dto.UserResponseDTO;
+import model.entities.Role;
 import model.entities.Users;
 //import model.service.ImagenUploadService;
 import model.service.UsersService;
@@ -115,6 +116,7 @@ public class UsersRestController {
 	public int register(@RequestBody RegisterDTO dto) {
 	    Users user = dto.toEntity();
 	    user.setPassword(passwordEncoder.encode(user.getPassword()));
+	    user.setRole(Role.USER);
 	    return userService.insert(user);
 	}
 	@DeleteMapping("/delete/{username}")
