@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,9 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import model.dto.ReviewDTO;
+import model.dto.ReviewResponseDTO;
 import model.entities.AlbumsCache;
 import model.entities.Review;
 import model.entities.Users;
@@ -36,6 +39,10 @@ public class ReviewRestController {
     
     @Autowired
     private AlbumCacheService albumSer;
+    
+    
+    
+ 
     
     @GetMapping("/todos")
     public List<Review> findAll() {
@@ -93,6 +100,17 @@ public class ReviewRestController {
         return BigDecimal.ZERO;
     }
     
+    @GetMapping("/followed/{userId}/recent")
+    public List<ReviewResponseDTO> findRecentFollowedReviews(@PathVariable Integer userId, 
+    		@RequestParam(defaultValue = "30") int limit) {
+    	  // El controller SOLO llama al servicio y convierte a DTO
+        List<Review> reviews = reviewSer.findRecentFollowedReviews(userId, limit);
+        
+        return reviews.stream()
+                .map(ReviewResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+    
     @PostMapping("/create")
     public int createOrUpdate(@RequestBody ReviewDTO reviewDTO) {
         Users user = userSer.findById(reviewDTO.getUserId());
@@ -116,5 +134,6 @@ public class ReviewRestController {
     public int delete(@PathVariable Integer id) {
         return reviewSer.delete(id);
     }
+    
 
 }

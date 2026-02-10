@@ -1,6 +1,7 @@
 package model.service;
 
 import java.util.List;
+
 import model.entities.Follows;
 
 public interface FollowsService {
@@ -12,5 +13,7 @@ public interface FollowsService {
     
     List<Follows> findFollowersByUsername(String username);
     List<Follows> findFollowingByUsername(String username);
+    
+    List<Integer> findFollowedIdsByUserId(Integer idUser);
 	
 }

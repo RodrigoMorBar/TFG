@@ -82,6 +82,14 @@ public class FollowsServiceJpaImplMy8 implements FollowsService {
 		// TODO Auto-generated method stub
 		return followRepo.findFollowingByUsername(username);
 	}
+	
+	@Override
+	public List<Integer> findFollowedIdsByUserId(Integer idUser) {
+		// TODO Auto-generated method stub
+		return followRepo.findFollowedIdsByUserId(idUser);
+	}
+	
+	}
 
 
 
@@ -93,4 +101,3 @@ public class FollowsServiceJpaImplMy8 implements FollowsService {
 	
 
 
-}

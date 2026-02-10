@@ -3,7 +3,9 @@ package model.service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,12 +13,16 @@ import org.springframework.stereotype.Service;
 import model.entities.AlbumsCache;
 import model.entities.Review;
 import model.entities.Users;
+import model.repository.FollowsRepository;
 import model.repository.ReviewRepository;
 @Service
 public class ReviewServiceJpaImplMy8 implements ReviewService{
 	
 	@Autowired
     private ReviewRepository reviewRepo;
+	
+	@Autowired
+	private FollowsRepository followRepo;
 
 	@Override
     public Review findById(Integer id) {
@@ -138,5 +144,27 @@ public class ReviewServiceJpaImplMy8 implements ReviewService{
         BigDecimal remainder = rating.remainder(new BigDecimal("0.5"));
         return remainder.compareTo(BigDecimal.ZERO) == 0;
     }
+
+	@Override
+	public List<Review> findRecentFollowedReviews(Integer userId, int limit) {
+		 // 1. Obtener IDs de las personas que sigo
+        List<Integer> followedIds = followRepo.findFollowedIdsByUserId(userId);
+        
+        // 2. Si no sigo a nadie, devolver lista vacía
+        if (followedIds == null || followedIds.isEmpty()) {
+            return new ArrayList<>();
+        }
+        
+        // 3. Buscar reviews de esas personas
+        List<Review> reviews = reviewRepo.findByUserIdInOrderByCreatedAtDesc(followedIds);
+        
+        // 4. Limitar resultados
+        return reviews.stream()
+                .limit(limit)
+                .collect(Collectors.toList());
+	}
+
+	
+	
 
 }

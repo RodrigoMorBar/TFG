@@ -22,5 +22,8 @@ public interface ReviewService {
     
     // Calcular rating promedio de un álbum lo dejo hecho pero se puede borrar
     BigDecimal media(AlbumsCache album);
-
+    
+    List<Review> findRecentFollowedReviews(Integer userId, int limit);
+	
+    
 }

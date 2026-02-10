@@ -46,6 +46,7 @@ public class SecurityConfig {
 		        		    .requestMatchers("/follow/**").permitAll()
 		        		    .requestMatchers("/soundlist/**").permitAll()
 		        		    .requestMatchers("/listalbum/**").permitAll()
+		        		    
 		        		    .anyRequest().permitAll()  // TODO público temporalmente
 		        		)
 		          .httpBasic(Customizer.withDefaults())
