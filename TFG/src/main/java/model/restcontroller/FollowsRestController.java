@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import model.dto.FollowResponseDTO;
+import model.dto.UserResponseDTO;
 import model.entities.Follows;
+import model.entities.Users;
 import model.service.FollowsService;
+import model.entities.Users;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -73,5 +76,15 @@ public class FollowsRestController {
 			response.add(new FollowResponseDTO(follow));
 		}
 		return response;
+	}
+	@GetMapping("/top-users")
+	public List<UserResponseDTO> getTopUsers(){
+		List <Users> users= followService.findUsersOrderedByFollowers();
+		List <UserResponseDTO> response = new ArrayList<>();
+		for  (Users user : users) {
+			response.add(new UserResponseDTO(user));
+		}
+		return response;
+				
 	}
 }

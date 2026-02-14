@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import model.entities.Follows;
+import model.entities.Users;
 
 public interface FollowsRepository extends JpaRepository<Follows, Integer>{
 	  // Obtener todos los que siguen a un usuario (sus seguidores)
@@ -19,6 +20,10 @@ public interface FollowsRepository extends JpaRepository<Follows, Integer>{
  // NUEVO: Obtener IDs de las personas que YO sigo
     @Query("SELECT f.followed.id FROM Follows f WHERE f.follower.id = :idUser")
     List<Integer> findFollowedIdsByUserId(Integer idUser);
+    
+    //Usuarios con mas seguidores 
+    @Query ("SELECT f.followed From Follows f GROUP BY f.followed ORDER BY COUNT(f) DESC")
+    List<Users> findUsersOrderedByFollowers();
 }
 
 

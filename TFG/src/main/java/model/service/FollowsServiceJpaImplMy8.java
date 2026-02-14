@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import model.entities.Follows;
+import model.entities.Users;
 import model.repository.FollowsRepository;
 
 @Service
@@ -87,6 +88,11 @@ public class FollowsServiceJpaImplMy8 implements FollowsService {
 	public List<Integer> findFollowedIdsByUserId(Integer idUser) {
 		// TODO Auto-generated method stub
 		return followRepo.findFollowedIdsByUserId(idUser);
+	}
+	@Override
+	public List<Users> findUsersOrderedByFollowers() {
+		// TODO Auto-generated method stub
+		return followRepo.findUsersOrderedByFollowers();
 	}
 	
 	}
