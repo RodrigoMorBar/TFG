@@ -3,6 +3,7 @@ package model.service;
 import java.util.List;
 
 import model.entities.Follows;
+import model.entities.Users;
 
 public interface FollowsService {
     List<Follows> findAll();
@@ -15,5 +16,6 @@ public interface FollowsService {
     List<Follows> findFollowingByUsername(String username);
     
     List<Integer> findFollowedIdsByUserId(Integer idUser);
+    List<Users> findUsersOrderedByFollowers(); 
 	
 }

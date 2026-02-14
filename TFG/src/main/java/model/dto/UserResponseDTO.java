@@ -24,6 +24,6 @@ public class UserResponseDTO {
 	        this.email = user.getEmail();
 	        this.bio = user.getBio();
 	        this.avatarUrl = user.getAvatarUrl();
-	        this.role = user.getRole().name();   // ← AÑADE ESTO también
+	        this.role = user.getRole().name();   
 	    }
 }
