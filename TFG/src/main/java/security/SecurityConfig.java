@@ -44,6 +44,7 @@ public class SecurityConfig {
 		        		    .requestMatchers("/user/register").permitAll()
 		        		    .requestMatchers("/user/login/**").permitAll()
 		        		    .requestMatchers("/follow/**").permitAll()
+		        		    .requestMatchers("/user/username/*/foto").permitAll()
 		        		    .requestMatchers("/soundlist/**").permitAll()
 		        		    .requestMatchers("/listalbum/**").permitAll()
 		        		    

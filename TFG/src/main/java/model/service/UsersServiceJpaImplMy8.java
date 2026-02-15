@@ -78,6 +78,36 @@ public class UsersServiceJpaImplMy8 implements UsersService, UserDetailsService 
 	@Override
 	public int update(Users usuario) {
 		int filas=0;
+		// Buscar usuario existente por ID (más seguro que por username)
+	    Users existing = usepo.findById(usuario.getIdUser()).orElse(null);
+	    
+	    if (existing != null) {
+	        try {
+	            // Actualizar SOLO los campos editables
+	            existing.setUsername(usuario.getUsername());
+	            existing.setEmail(usuario.getEmail());
+	            existing.setBio(usuario.getBio());
+	            existing.setAvatarUrl(usuario.getAvatarUrl());
+	            existing.setRole(usuario.getRole());
+	            
+	            // NO tocar el password - se mantiene el que ya existe en la BD
+	            // NO tocar createdAt - se mantiene el original
+	            
+	            // Guardar el usuario existente con los campos actualizados
+	            usepo.save(existing);
+	            filas = 1;
+	            
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            filas = -1;
+	        }
+	    } else {
+	        filas = 0;
+	    }
+	    
+	    return filas;
+	}
+		/*
 		Users existing = usepo.findByUsername(usuario.getUsername());
 		if(existing != null) {
 			try {
@@ -92,6 +122,7 @@ public class UsersServiceJpaImplMy8 implements UsersService, UserDetailsService 
 			filas=0;
 		return filas;
 	}
+	*/
 
 	@Override
 	public Users updateFoto(String username, String avatarUrl) {

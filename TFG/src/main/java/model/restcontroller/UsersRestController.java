@@ -28,6 +28,7 @@ import model.dto.RegisterDTO;
 import model.dto.UserResponseDTO;
 import model.entities.Role;
 import model.entities.Users;
+import model.service.ImagenUploadService;
 //import model.service.ImagenUploadService;
 import model.service.UsersService;
 
@@ -46,7 +47,7 @@ public class UsersRestController {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	
-	/*@Autowired
+	@Autowired
 	private ImagenUploadService imagenUploadService;
 	
 	
@@ -74,7 +75,7 @@ public class UsersRestController {
 	        e.printStackTrace();
 	        return ResponseEntity.status(500).body("Error al subir imagen: " + e.getMessage());
 	    }
-	}*/
+	}
 	
 	@GetMapping("/todos")
 	public List<UserResponseDTO> findAll(){

@@ -6,7 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"TFG", "model", "security"})
+@ComponentScan(basePackages = {"TFG", "model", "security", "config"})
 @EnableJpaRepositories(basePackages = "model.repository")
 @EntityScan(basePackages = "model.entities")
 public class TfgApplication {
