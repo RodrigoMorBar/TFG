@@ -16,6 +16,8 @@ public interface UsersService {
 	int insert(Users usuario);
 	int delete (String username);
 	int update (Users usuario);
+	List<Users> findUsersOrderedByReviews();
+	List<Users> findUsersOrderedByAvgRating();
 	
 	
 	

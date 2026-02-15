@@ -111,4 +111,18 @@ public class UsersServiceJpaImplMy8 implements UsersService, UserDetailsService 
 		    }
 		    return usuario;
 	}
+
+	@Override
+	public List<Users> findUsersOrderedByReviews() {
+		// TODO Auto-generated method stub
+		return usepo.findUsersOrderedByReviews();
+	}
+
+	@Override
+	public List<Users> findUsersOrderedByAvgRating() {
+		// TODO Auto-generated method stub
+		return usepo.findUsersOrderedByAvgRating();
+	}
+
+	
 }

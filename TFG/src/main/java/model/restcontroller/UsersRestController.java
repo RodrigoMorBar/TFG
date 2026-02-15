@@ -127,6 +127,25 @@ public class UsersRestController {
 	public int update (@RequestBody Users usuario) {
 		return userService.update(usuario);
 	}
+	@GetMapping("/top-reviewers")
+	public List<UserResponseDTO> getTopReviewers() {
+	    List<Users> users = userService.findUsersOrderedByReviews();
+	    List<UserResponseDTO> response = new ArrayList<>();
+	    for(Users user : users) {
+	        response.add(new UserResponseDTO(user));
+	    }
+	    return response;
+	}
+
+	@GetMapping("/top-rated")
+	public List<UserResponseDTO> getTopRated() {
+	    List<Users> users = userService.findUsersOrderedByAvgRating();
+	    List<UserResponseDTO> response = new ArrayList<>();
+	    for(Users user : users) {
+	        response.add(new UserResponseDTO(user));
+	    }
+	    return response;
+	}
 	
 	
 
