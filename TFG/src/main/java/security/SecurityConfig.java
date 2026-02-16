@@ -18,10 +18,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import security.JwtFilter;
 
 import model.entities.Users;
 
@@ -34,24 +36,21 @@ public class SecurityConfig {
 	  
 	  @Bean
 	  SecurityFilterChain securityFilterChain(HttpSecurity http,
-	                                          AuthenticationProvider authProvider) throws Exception {
+	                                          AuthenticationProvider authProvider,
+	                                          JwtFilter jwtFilter) throws Exception {
 		  
 		      http
 		          .csrf(csrf -> csrf.disable())
 		          .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-		          .cors(Customizer.withDefaults())
+		          .cors(c -> c.configurationSource(corsConfigurationSource()))
 		          .authorizeHttpRequests(auth -> auth
 		        		    .requestMatchers("/user/register").permitAll()
 		        		    .requestMatchers("/user/login/**").permitAll()
-		        		    .requestMatchers("/follow/**").permitAll()
-		        		    .requestMatchers("/user/username/*/foto").permitAll()
-		        		    .requestMatchers("/soundlist/**").permitAll()
-		        		    .requestMatchers("/listalbum/**").permitAll()
 		        		    
-		        		    .anyRequest().permitAll()  // TODO público temporalmente
+		        		    .anyRequest().authenticated()  // Hemos cambiado el permite all por el que esten authenticados
 		        		)
-		          .httpBasic(Customizer.withDefaults())
-		          .authenticationProvider(authProvider);
+		          .authenticationProvider(authProvider)
+		          .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 		      return http.build();
 		  }
 	          
