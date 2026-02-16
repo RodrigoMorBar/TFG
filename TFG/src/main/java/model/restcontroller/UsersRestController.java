@@ -31,6 +31,7 @@ import model.entities.Users;
 import model.service.ImagenUploadService;
 //import model.service.ImagenUploadService;
 import model.service.UsersService;
+import security.JwtService;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -49,6 +50,9 @@ public class UsersRestController {
 	
 	@Autowired
 	private ImagenUploadService imagenUploadService;
+	
+	@Autowired
+	private JwtService jwtService;
 	
 	
 	
@@ -97,11 +101,17 @@ public class UsersRestController {
 	            )
 	        );
 	        
+	        //Generamos el token con  el username
+	        String token = jwtService.generateToken(loginRequest.getUsername());
+	        
 	        // Si llega aquí, las credenciales son correctas
 	        Users user = userService.findByUserName(loginRequest.getUsername());
-	        UserResponseDTO response = new UserResponseDTO(user);
+	        UserResponseDTO userDTO = new UserResponseDTO(user);
 	        
-	        return ResponseEntity.ok(response);
+	        return ResponseEntity.ok(Map.of(
+	        		"token", token,
+	        		"user", userDTO
+	        		));
 	        
 	    } catch (Exception e) {
 	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
