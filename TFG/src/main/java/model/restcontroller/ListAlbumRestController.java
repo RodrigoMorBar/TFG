@@ -105,6 +105,48 @@ public class ListAlbumRestController {
 	    public int deleteByListAndAlbum(@PathVariable Integer listId,@PathVariable String albumSpotifyId) {
 	        return listAlbumService.deleteByListIdAndAlbumId(listId, albumSpotifyId);
 	    }
+	// ListAlbumRestController.java - AÑADE ESTE MÉTODO
+
+	 @PostMapping("/add")
+	 public ResponseEntity<?> addAlbum(@RequestBody Map<String, Object> body) {
+	     try {
+	         
+	         String albumSpotifyId = (String) body.get("albumSpotifyId");
+	         Integer listId = null;
+	         
+	         // El listId puede venir como Integer o String
+	         Object listIdObj = body.get("listId");
+	         if (listIdObj instanceof Integer) {
+	             listId = (Integer) listIdObj;
+	         } else if (listIdObj instanceof String) {
+	             listId = Integer.parseInt((String) listIdObj);
+	         }
+	         	        
+
+	         if (albumSpotifyId == null || listId == null) {
+	             return ResponseEntity.badRequest().body("Faltan parámetros");
+	         }
+
+	         // Usar el método insertByIds que ya tienes
+	         int result = listAlbumService.insertByIds(listId, albumSpotifyId);
+	         
+	         System.out.println("✅ Resultado: " + result);
+	         
+	         if (result == 1) {
+	             return ResponseEntity.ok(result);
+	         } else if (result == -1) {
+	             return ResponseEntity.status(409).body("El álbum ya está en la lista");
+	         } else if (result == -2) {
+	             return ResponseEntity.status(403).body("No es tu lista");
+	         } else {
+	             return ResponseEntity.status(404).body("Lista o álbum no encontrado");
+	         }
+
+	     } catch (Exception e) {
+	         e.printStackTrace();
+	         return ResponseEntity.status(500).body("Error: " + e.getMessage());
+	     }
+	 }
 	
 	
 	

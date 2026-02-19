@@ -1,5 +1,6 @@
 package model.restcontroller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import model.entities.AlbumsCache;
@@ -63,6 +65,19 @@ public class AlbumCacheRestController {
     public int update(@PathVariable String spotifyAlbumId, @RequestBody AlbumsCache album) {
         album.setSpotifyAlbumId(spotifyAlbumId);
         return albumService.update(album);
+    }
+    @GetMapping("/search")
+    public List<AlbumsCache> search(@RequestParam String query) {
+        List<AlbumsCache> byTitle = albumService.findByTitle(query);
+        List<AlbumsCache> byArtist = albumService.findByArtist(query);
+        
+        List<AlbumsCache> results = new ArrayList<>(byTitle);
+        for (AlbumsCache a : byArtist) {
+            if (results.stream().noneMatch(r -> r.getSpotifyAlbumId().equals(a.getSpotifyAlbumId()))) {
+                results.add(a);
+            }
+        }
+        return results;
     }
 	    }
 
