@@ -12,6 +12,7 @@ public class ListAlbumResponseDTO {
     private String albumArtist;
     private String albumCoverUrl;
     private LocalDateTime addedAt;
+    private String listOwnerUsername;
     
     public ListAlbumResponseDTO() {
     }
@@ -25,6 +26,7 @@ public class ListAlbumResponseDTO {
         this.albumArtist = listAlbum.getAlbum().getArtist();
         this.albumCoverUrl = listAlbum.getAlbum().getCoverUrl();
         this.addedAt = listAlbum.getAddedAt();
+        this.listOwnerUsername=listAlbum.getList().getUser().getUsername();
     }
     
     // Getters y Setters
@@ -90,5 +92,12 @@ public class ListAlbumResponseDTO {
     
     public void setAddedAt(LocalDateTime addedAt) {
         this.addedAt = addedAt;
+    }
+    public String getListOwnerUsername() {
+        return listOwnerUsername;
+    }
+
+    public void setListOwnerUsername(String listOwnerUsername) {
+        this.listOwnerUsername = listOwnerUsername;
     }
 }
