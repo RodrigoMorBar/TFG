@@ -1,5 +1,6 @@
 package model.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,6 +132,7 @@ public class ListAlbumServiceJpaImplMy8 implements ListAlbumService{
            ListAlbum la = new ListAlbum();
            la.setList(list);
            la.setAlbum(album);
+           la.setAddedAt(LocalDateTime.now());
            listAlbumRepo.save(la);
            return 1; //Insertado
        } catch (Exception e) {
