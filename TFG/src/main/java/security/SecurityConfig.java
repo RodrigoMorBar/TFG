@@ -47,18 +47,7 @@ public class SecurityConfig {
 		        		    .requestMatchers("/user/register").permitAll()
 		        		    .requestMatchers("/user/login/**").permitAll()
 		        		    
-		        		    .requestMatchers("/user/username/**").permitAll()
-		                    .requestMatchers("/user/update-profile").permitAll()
-		                    .requestMatchers("/user/update").permitAll()
-		                    .requestMatchers("/reviews/**").permitAll()
-		                    .requestMatchers("/albums/**").permitAll()
-		                    .requestMatchers("/albumscache/search").permitAll()
-		                    .requestMatchers("/soundlist/**").permitAll()
-		                    .requestMatchers("/listalbum/**").permitAll()
-		                    .requestMatchers("/follow/**").permitAll()
-		                    .requestMatchers("/likes/**").permitAll()
-		                    
-		                    .requestMatchers("/spotify/**").permitAll()
+		        		  
 		        		    
 		        		    .anyRequest().authenticated()  // Hemos cambiado el permite all por el que esten authenticados
 		        		)
