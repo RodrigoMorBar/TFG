@@ -1,6 +1,7 @@
 package model.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,6 +25,13 @@ public interface FollowsRepository extends JpaRepository<Follows, Integer>{
     //Usuarios con mas seguidores 
     @Query ("SELECT f.followed From Follows f GROUP BY f.followed ORDER BY COUNT(f) DESC")
     List<Users> findUsersOrderedByFollowers();
+    
+    
+    @Query("SELECT f FROM Follows f WHERE f.follower.username = ?1 AND f.followed.username = ?2")
+    Optional<Follows> findByFollowerAndFollowed(String follower, String followed);
+
+    @Query("SELECT COUNT(f) > 0 FROM Follows f WHERE f.follower.username = ?1 AND f.followed.username = ?2")
+    boolean existsByFollowerAndFollowed(String follower, String followed);
 }
 
 
