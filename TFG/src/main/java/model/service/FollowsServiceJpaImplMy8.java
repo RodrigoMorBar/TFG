@@ -1,11 +1,13 @@
 package model.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import model.entities.Follows;
 import model.entities.Users;
 import model.repository.FollowsRepository;
+import model.repository.UsersRepository;
 
 @Service
 public class FollowsServiceJpaImplMy8 implements FollowsService {
@@ -93,6 +95,54 @@ public class FollowsServiceJpaImplMy8 implements FollowsService {
 	public List<Users> findUsersOrderedByFollowers() {
 		// TODO Auto-generated method stub
 		return followRepo.findUsersOrderedByFollowers();
+	}
+	
+	@Autowired
+	private UsersRepository usersRepo;
+
+	@Override
+	public boolean isFollowing(String followerUsername, String followedUsername) {
+	    return followRepo.existsByFollowerAndFollowed(followerUsername, followedUsername);
+	}
+
+	@Override
+	public int followByUsername(String followerUsername, String followedUsername) {
+	    try {
+	        if (followRepo.existsByFollowerAndFollowed(followerUsername, followedUsername)) {
+	            return -1; // ya lo sigue
+	        }
+	        Users follower = usersRepo.findByUsername(followerUsername);
+	        Users followed = usersRepo.findByUsername(followedUsername);
+	        if (follower == null || followed == null) return 0;
+
+	        Follows follow = Follows.builder()
+	            .follower(follower)
+	            .followed(followed)
+	            .createdAt(LocalDateTime.now())
+	            .build();
+	        followRepo.save(follow);
+	        return 1;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return 0;
+	    }
+	}
+
+	@Override
+	public int unfollowByUsername(String followerUsername, String followedUsername) {
+	    Follows follow = followRepo
+	        .findByFollowerAndFollowed(followerUsername, followedUsername)
+	        .orElse(null);
+
+	    if (follow == null) return 0; // no existe
+
+	    try {
+	        followRepo.delete(follow);
+	        return 1;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return -1;
+	    }
 	}
 	
 	}

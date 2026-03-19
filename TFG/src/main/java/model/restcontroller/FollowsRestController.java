@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import model.dto.FollowResponseDTO;
@@ -17,7 +18,7 @@ import model.dto.UserResponseDTO;
 import model.entities.Follows;
 import model.entities.Users;
 import model.service.FollowsService;
-import model.entities.Users;
+
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -86,5 +87,26 @@ public class FollowsRestController {
 		}
 		return response;
 				
+	}
+	
+	@GetMapping("/status/{followerUsername}/{followedUsername}")
+	public boolean isFollowing(
+	    @PathVariable String followerUsername,
+	    @PathVariable String followedUsername) {
+	    return followService.isFollowing(followerUsername, followedUsername);
+	}
+
+	@PostMapping("/{followedUsername}")
+	public int follow(
+	    @PathVariable String followedUsername,
+	    @RequestParam String followerUsername) {
+	    return followService.followByUsername(followerUsername, followedUsername);
+	}
+
+	@DeleteMapping("/{followedUsername}")
+	public int unfollow(
+	    @PathVariable String followedUsername,
+	    @RequestParam String followerUsername) {
+	    return followService.unfollowByUsername(followerUsername, followedUsername);
 	}
 }

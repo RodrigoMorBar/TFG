@@ -17,5 +17,10 @@ public interface FollowsService {
     
     List<Integer> findFollowedIdsByUserId(Integer idUser);
     List<Users> findUsersOrderedByFollowers(); 
+    
+    
+    boolean isFollowing(String followerUsername, String followedUsername);
+    int followByUsername(String followerUsername, String followedUsername);
+    int unfollowByUsername(String followerUsername, String followedUsername);
 	
 }

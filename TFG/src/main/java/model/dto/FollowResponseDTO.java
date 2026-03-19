@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 
 public class FollowResponseDTO {
     private String followerUsername;
+    private String followerAvatarUrl;
     private String followedUsername;
+    private String followedAvatarUrl;
     private LocalDateTime createdAt;
     
     public FollowResponseDTO() {
@@ -20,12 +22,30 @@ public class FollowResponseDTO {
     public FollowResponseDTO(Follows follow) {
         if(follow != null) {
             this.followerUsername = follow.getFollower() != null ? follow.getFollower().getUsername() : null;
+            this.followerAvatarUrl = follow.getFollower() != null ? follow.getFollower().getAvatarUrl() : null;
             this.followedUsername = follow.getFollowed() != null ? follow.getFollowed().getUsername() : null;
+            this.followedAvatarUrl = follow.getFollower() != null ? follow.getFollower().getAvatarUrl() : null;
             this.createdAt = follow.getCreatedAt();
         }
     }
     
-    public String getFollowerUsername() {
+    public String getFollowerAvatarUrl() {
+		return followerAvatarUrl;
+	}
+
+	public void setFollowerAvatarUrl(String followerAvatarUrl) {
+		this.followerAvatarUrl = followerAvatarUrl;
+	}
+
+	public String getFollowedAvatarUrl() {
+		return followedAvatarUrl;
+	}
+
+	public void setFollowedAvatarUrl(String followedAvatarUrl) {
+		this.followedAvatarUrl = followedAvatarUrl;
+	}
+
+	public String getFollowerUsername() {
         return followerUsername;
     }
     
