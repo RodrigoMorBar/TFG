@@ -154,6 +154,11 @@ public class UsersServiceJpaImplMy8 implements UsersService, UserDetailsService 
 		// TODO Auto-generated method stub
 		return usepo.findUsersOrderedByAvgRating();
 	}
+	
+	@Override
+	public List<Users> searchByUsername(String username) {
+	    return usepo.findByUsernameContainingIgnoreCase(username);
+	}
 
 	
 }

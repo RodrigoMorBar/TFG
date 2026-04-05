@@ -18,5 +18,8 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
 	
 	@Query("Select r.user FROM Review r GROUP BY r.user ORDER BY AVG(r.rating) DESC")
 	List<Users> findUsersOrderedByAvgRating();
+	
+	List<Users> findByUsernameContainingIgnoreCase(String username);
+
 
 }
