@@ -18,6 +18,7 @@ public interface UsersService {
 	int update (Users usuario);
 	List<Users> findUsersOrderedByReviews();
 	List<Users> findUsersOrderedByAvgRating();
+	List<Users> searchByUsername(String username);
 	
 	
 	

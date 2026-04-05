@@ -23,13 +23,13 @@ public class AlbumCacheServiceJpaImplMy8 implements AlbumCacheService{
 	@Override
 	public List<AlbumsCache> findByTitle(String title) {
 		// TODO Auto-generated method stub
-		return cache.findByTitle(title);
+		return cache.findByTitleContainingIgnoreCase(title);
 	}
 
 	@Override
 	public List<AlbumsCache> findByArtist(String artist) {
 		// TODO Auto-generated method stub
-		return cache.findByArtist(artist);
+		return cache.findByArtistContainingIgnoreCase(artist);
 	}
 
 	@Override

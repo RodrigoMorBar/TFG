@@ -7,7 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import model.entities.AlbumsCache;
 
 public interface AlbumsCacheRepository extends JpaRepository<AlbumsCache, String>{
-	List<AlbumsCache> findByTitle(String title);
-    List<AlbumsCache> findByArtist(String artist);
+	List<AlbumsCache> findByTitleContainingIgnoreCase(String title);
+	List<AlbumsCache> findByArtistContainingIgnoreCase(String artist);
+
 
 }

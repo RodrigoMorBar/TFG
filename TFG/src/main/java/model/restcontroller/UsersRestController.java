@@ -3,6 +3,7 @@ package model.restcontroller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -158,6 +159,12 @@ public class UsersRestController {
 	    return response;
 	}
 	
-	
+	@GetMapping("/search")
+	public List<UserResponseDTO> searchByUsername(@RequestParam String query) {
+	    return userService.searchByUsername(query)
+	        .stream()
+	        .map(UserResponseDTO::new)
+	        .collect(Collectors.toList());
+	}
 
 }
