@@ -101,5 +101,12 @@ int filas = 0;
         
         return filas;
     }
+	
+	
+	@Override
+	public AlbumsCache save(AlbumsCache album) {
+	    return cache.save(album);
+	}
+
 	}
 	

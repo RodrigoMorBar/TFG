@@ -2,6 +2,7 @@ package model.restcontroller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import model.entities.AlbumsCache;
 import model.service.AlbumCacheService;
+import model.service.SpotifyService;
 
 @RestController
 @RequestMapping("/albums")
@@ -24,6 +26,8 @@ import model.service.AlbumCacheService;
 public class AlbumCacheRestController {
 	@Autowired
     private AlbumCacheService albumService;
+	@Autowired
+	private SpotifyService spotifyService;
     
     @GetMapping("/todos")
     public List<AlbumsCache> findAll() {
@@ -33,8 +37,29 @@ public class AlbumCacheRestController {
     
     @GetMapping("/id/{spotifyAlbumId}")
     public AlbumsCache findById(@PathVariable String spotifyAlbumId) {
-        return albumService.findById(spotifyAlbumId);
+        // 1. Buscar en caché local
+        AlbumsCache cached = albumService.findById(spotifyAlbumId);
+        if (cached != null) return cached;
+
+        // 2. Si no está → buscar en Spotify y guardar
+        try {
+            Map<String, Object> spotifyData = spotifyService.getAlbum(spotifyAlbumId);
+            AlbumsCache newAlbum = new AlbumsCache();
+            newAlbum.setSpotifyAlbumId((String) spotifyData.get("spotifyAlbumId"));
+            newAlbum.setTitle((String) spotifyData.get("title"));
+            newAlbum.setArtist((String) spotifyData.get("artist"));
+            newAlbum.setCoverUrl((String) spotifyData.get("coverUrl"));
+            newAlbum.setReleaseYear(Integer.parseInt((String) spotifyData.get("releaseYear")));
+            newAlbum.setSpotifyUrl((String) spotifyData.get("spotifyUrl"));
+            newAlbum.setCachedAt(java.time.LocalDateTime.now());
+            albumService.save(newAlbum);
+            return newAlbum;
+        } catch (Exception e) {
+        	System.out.println("ERROR guardando álbum: " + e.getMessage());
+            return null;
+        }
     }
+
     
   
     @GetMapping("/title/{title}")

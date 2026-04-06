@@ -13,5 +13,6 @@ public interface AlbumCacheService{
     int insert(AlbumsCache album);
     int delete(String spotifyAlbumId);
     int update(AlbumsCache album);
+    AlbumsCache save (AlbumsCache album);
 
 }
