@@ -24,7 +24,7 @@ public class FollowResponseDTO {
             this.followerUsername = follow.getFollower() != null ? follow.getFollower().getUsername() : null;
             this.followerAvatarUrl = follow.getFollower() != null ? follow.getFollower().getAvatarUrl() : null;
             this.followedUsername = follow.getFollowed() != null ? follow.getFollowed().getUsername() : null;
-            this.followedAvatarUrl = follow.getFollower() != null ? follow.getFollower().getAvatarUrl() : null;
+            this.followedAvatarUrl = follow.getFollowed() != null ? follow.getFollowed().getAvatarUrl() : null;
             this.createdAt = follow.getCreatedAt();
         }
     }
