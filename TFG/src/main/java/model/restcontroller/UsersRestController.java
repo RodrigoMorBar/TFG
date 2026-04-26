@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 import model.dto.LoginRequest;
 import model.dto.RegisterDTO;
@@ -132,8 +135,8 @@ public class UsersRestController {
 	    return userService.insert(user);
 	}
 	@DeleteMapping("/delete/{username}")
-	public int delete (@PathVariable String username) {
-		return userService.delete(username);
+	public int delete(@PathVariable String username) {
+	     return userService.delete(username);
 	}
 	@PostMapping("/update")
 	public int update (@RequestBody Users usuario) {
@@ -166,5 +169,27 @@ public class UsersRestController {
 	        .map(UserResponseDTO::new)
 	        .collect(Collectors.toList());
 	}
+	@PutMapping("/role/{username}")
+	public int changeRole(@PathVariable String username, @RequestParam String role) {
+	    Users user = userService.findByUserName(username);
+	    if(user == null) return 0;
+	    try {
+	        user.setRole(Role.valueOf(role.toUpperCase()));
+	        return userService.update(user);
+	    } catch(Exception e) {
+	        e.printStackTrace();
+	        return -1;
+	    }
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
