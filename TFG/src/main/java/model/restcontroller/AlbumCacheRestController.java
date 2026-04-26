@@ -41,7 +41,7 @@ public class AlbumCacheRestController {
         AlbumsCache cached = albumService.findById(spotifyAlbumId);
         if (cached != null) return cached;
 
-        // 2. Si no está → buscar en Spotify y guardar
+    
         try {
             Map<String, Object> spotifyData = spotifyService.getAlbum(spotifyAlbumId);
             AlbumsCache newAlbum = new AlbumsCache();
