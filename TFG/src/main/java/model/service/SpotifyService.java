@@ -23,7 +23,7 @@ public class SpotifyService {
     private String accessToken;
     private long   tokenExpiresAt = 0;
 
-    // ── Obtiene token (Client Credentials) ──────────────────────
+    // Obtiene token (Client Credentials)
     private String getAccessToken() throws Exception {
         if (accessToken != null && System.currentTimeMillis() < tokenExpiresAt) {
             return accessToken;
@@ -50,7 +50,7 @@ public class SpotifyService {
         return accessToken;
     }
 
-    // ── Buscar álbumes ───────────────────────────────────────────
+    // ── Buscar álbumes
     public List<Map<String, Object>> searchAlbums(String query) throws Exception {
         String token = getAccessToken();
         String url   = "https://api.spotify.com/v1/search?q="
@@ -80,7 +80,7 @@ public class SpotifyService {
         return result;
     }
 
-    // ── Obtener álbum por ID ─────────────────────────────────────
+    // ── Obtener álbum por ID
     public Map<String, Object> getAlbum(String spotifyId) throws Exception {
         String token = getAccessToken();
         String url   = "https://api.spotify.com/v1/albums/" + spotifyId + "?market=ES";
@@ -103,7 +103,7 @@ public class SpotifyService {
         return a;
     }
 
-    // ── Obtener canciones con preview_url ────────────────────────
+    // ── Obtener canciones con preview_url
     public List<Map<String, Object>> getAlbumTracks(String spotifyId) throws Exception {
         String token = getAccessToken();
         String url   = "https://api.spotify.com/v1/albums/" + spotifyId + "/tracks?market=ES&limit=50";

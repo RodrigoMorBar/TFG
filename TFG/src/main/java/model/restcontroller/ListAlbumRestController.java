@@ -130,7 +130,7 @@ public class ListAlbumRestController {
 	         // Usar el método insertByIds que ya tienes
 	         int result = listAlbumService.insertByIds(listId, albumSpotifyId);
 	         
-	         System.out.println("✅ Resultado: " + result);
+	        
 	         
 	         if (result == 1) {
 	             return ResponseEntity.ok(result);
